@@ -14,11 +14,12 @@ package com.snowplowanalytics.hadoop.scalding
 
 // Specs2
 import org.specs2.mutable.Specification
-
-// Scalding
 import com.twitter.scalding._
+import org.junit.runner.RunWith
+import org.specs2.runner.JUnitRunner
 
-class WordCountTest extends Specification with TupleConversions {
+@RunWith(classOf[JUnitRunner])
+class WordCountTest extends Specification {
   "A WordCount job" should {
     JobTest("com.snowplowanalytics.hadoop.scalding.WordCountJob").
       arg("input", "inputFile").
