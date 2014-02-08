@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 SnowPlow Analytics Ltd. All rights reserved.
+ * Copyright (c) 2012 Twitter, Inc.
  *
  * This program is licensed to you under the Apache License Version 2.0,
  * and you may not use this file except in compliance with the Apache License Version 2.0.
@@ -10,21 +10,20 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package com.snowplowanalytics.hadoop.scalding
-
-// Hadoop
-import org.apache.hadoop
+package ru.hh.scalding
 
 // Scalding
-import com.twitter.scalding.Tool
+import com.twitter.scalding._
 
-/**
- * Entrypoint for Hadoop to kick off the job.
- *
- * Borrowed from com.twitter.scalding.Tool
- */
-object JobRunner {
-  def main(args : Array[String]) {
-    hadoop.util.ToolRunner.run(new hadoop.conf.Configuration, new Tool, args);
+class WordCountJob(args : Args) extends Job(args) {
+  TextLine( args("input") )
+    .flatMap('line -> 'word) { line : String => tokenize(line) }
+    .groupBy('word) { _.size }
+    .write( Tsv( args("output") ) )
+
+  // Split a piece of text into individual words.
+  def tokenize(text : String) : Array[String] = {
+    // Lowercase each word and remove punctuation.
+    text.toLowerCase.replaceAll("[^a-zA-Z0-9\\s]", "").split("\\s+")
   }
 }

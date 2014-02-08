@@ -1,20 +1,18 @@
-# Scalding Example Project [![Build Status](https://travis-ci.org/snowplow/scalding-example-project.png)](https://travis-ci.org/snowplow/scalding-example-project)
+# Scalding Example Project 
 
 ## Introduction
 
 This is Twitter's [`WordCountJob`] [wordcount] example for [Scalding] [scalding] adapted to run on Hadoop and Amazon Elastic MapReduce as a standalone job - i.e. without requiring `scald.rb` etc. It also includes Specs2 tests.
 
-This was built as a Scala SBT project by the [Snowplow Analytics] [snowplow] team, as a proof of concept for porting our ETL process to Scalding to run on [Amazon Elastic MapReduce] [emr].
+This was rebuilt as a Scala Maven project by the [Headhunter] [hh] team from Scala SBT project built by [Snowplow Analytics] [snowplow] team, as a proof of concept for porting our ETL process to Scalding to run on [Amazon Elastic MapReduce] [emr].
 
 For a much fuller Scalding example, see the Snowplow [Hadoop ETL] [snowplow-hadoop-etl] project.
 
 ## Building
 
-Assuming you already have SBT installed:
-
-    $ git clone git://github.com/snowplow/scalding-example-project.git
+    $ git clone git://github.com/hhru/scalding-example-project.git
     $ cd scalding-example-project
-    $ sbt assembly
+    $ mvn package
 
 The 'fat jar' is now available as:
 
@@ -24,7 +22,7 @@ The 'fat jar' is now available as:
 
 The `assembly` command above runs the test suite - but you can also run this manually with:
 
-    $ sbt test
+    $ mvn test
     <snip>
     [info] + A WordCount job should
 	[info]   + count words correctly
@@ -44,7 +42,7 @@ Finally, you are ready to run this job using the [Amazon Ruby EMR client] [emr-c
 
     $ elastic-mapreduce --create --name "scalding-example-project" \
       --jar s3n://{{JAR_BUCKET}}/scalding-example-project-0.0.4.jar \
-      --arg com.snowplowanalytics.hadoop.scalding.WordCountJob \
+      --arg ru.hh.scalding.WordCountJob \
       --arg --hdfs \
       --arg --input --arg s3n://{{IN_BUCKET}}/hello.txt \
       --arg --output --arg s3n://{{OUT_BUCKET}}/results
@@ -94,6 +92,7 @@ Nothing planned currently.
 ## Copyright and license
 
 Copyright 2012-2013 Snowplow Analytics Ltd, with significant portions copyright 2012 Twitter, Inc.
+Copyright 2014 Headhunter LLC
 
 Licensed under the [Apache License, Version 2.0] [license] (the "License");
 you may not use this software except in compliance with the License.
@@ -107,6 +106,7 @@ limitations under the License.
 [wordcount]: https://github.com/twitter/scalding/blob/master/README.md
 [scalding]: https://github.com/twitter/scalding/
 [snowplow]: http://snowplowanalytics.com
+[hh]: http://hh.ru
 [snowplow-hadoop-etl]: https://github.com/snowplow/snowplow/tree/master/3-enrich/hadoop-etl
 [emr]: http://aws.amazon.com/elasticmapreduce/
 [hello-txt]: https://github.com/snowplow/scalding-example-project/raw/master/data/hello.txt
